@@ -32,7 +32,7 @@ const login =(userDetails,navigate)=>{
 
             dispatch(setUserDetails(userDetails));
             dispatch(openAlertMessage("Se inició sesión correctamente"));
-            //navigate("/dashboard");
+            navigate("/dashboard");
         }
     }
 }
@@ -44,12 +44,12 @@ const register =(userDetails,navigate)=>{
         if(response.error){
             dispatch(openAlertMessage(response?.exception?.response?.data));
         }else{
-            const {userDetails}=response?.data;
-            localStorage.setItem('user',JSON.stringify(userDetails));
+           /*  const {userDetails}=response?.data;
+            localStorage.setItem('user',JSON.stringify(userDetails)); 
 
-            dispatch(setUserDetails(userDetails));
+            dispatch(setUserDetails(userDetails));*/
             dispatch(openAlertMessage("Se registró correctamente"));
-            //navigate("/dashboard");
+            navigate("/login");
         }
     }
 }

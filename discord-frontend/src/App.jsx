@@ -14,7 +14,7 @@ function App() {
           <Route exact path='/login' element={<LoginPage/>} />
           <Route exact path='/register' element={<RegisterPage/>} />
           <Route exact path='/dashboard' element={<Dashboard/>} />
-          <Route exact path='/' element= {<Navigate to="/dashboard" />}/>{/* For default we redirect to dashboard */}
+          <Route exact path='/' element= {<Navigate to="/login" />}/>{/* For default we redirect to dashboard */}
         </Routes>
       </Router>
       <AlertNotification/>
