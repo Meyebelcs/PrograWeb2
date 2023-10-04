@@ -5,6 +5,22 @@ const apiClient = axios.create({
     timeout:1000
 });
 
+//Antes de que los request sean ejecutados en el server se ejecutará esta lógica
+apiClient.interceptors.request.use((config)=>{
+    const userDetails = localStorage.getItem('user');
+
+    if(userDetails){
+        const token=JSON.parse(userDetails).token;
+        config.headers.Authorization=`Bearer ${token}`;
+    }
+
+    return config;
+},(err)=>{
+    return Promise.reject(err);
+});
+
+//public roots
+
 export const login = async(data)=>{
     try{
         return await apiClient.post('/auth/login',data);
@@ -24,5 +40,15 @@ export const register=async (data)=>{
             error:true,
             exception,
         };
+    }
+};
+
+//secure routes (solo se recibirá respuesta si el token es correcto)
+
+const checkResponseCode=(exception)=>{
+    const checkResponseCode=exception?.response?.status;
+
+    if(responseCode){
+        (responseCode===401||responseCode===403) && logout();
     }
 };
