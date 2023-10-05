@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const authRoutes=require("./routes/authRoutes");
 
-const PORT =process.env.PORT|| process.env.API_PORT;
+const PORT =process.env.PORT || process.env.API_PORT;
 
 const app=express();
 app.use(express.json());
