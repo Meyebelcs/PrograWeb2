@@ -23,9 +23,22 @@ const postRegister = async (req,res)=>{
             password:encryptedPassword
         });
 
+        //create JWT Token
+        const token= jwt.sign(
+            {
+                userId: user._id,
+                mail
+            },
+            process.env.TOKEN_KEY,
+            {
+                expiresIn: '24h'
+            }
+        );
+
         res.status(201).json({
             userDetails:{
                 mail:user.mail,
+                token: token,
                 username:user.username,
                 _id: user._id
             },
