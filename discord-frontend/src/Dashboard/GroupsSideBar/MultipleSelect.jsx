@@ -18,20 +18,7 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
-export default function MultipleSelectCheckmarks() {
+export default function MultipleSelectCheckmarks({friends, setSelectedUsers}) {
   const [personName, setPersonName] = React.useState([]);
 
   const handleChange = (event) => {
@@ -41,6 +28,13 @@ export default function MultipleSelectCheckmarks() {
     setPersonName(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
+    );
+    setSelectedUsers(
+      // On autofill we get a stringified value.
+      event.target.value.map((selectedValue) => {
+        const friend = friends.find((friend) => friend.mail === selectedValue);
+        return friend.id;
+      })
     );
   };
 
@@ -58,10 +52,10 @@ export default function MultipleSelectCheckmarks() {
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
-            <MenuItem key={name} value={name}>
+          {friends.map((name) => (
+            <MenuItem key={name.id} value={name.mail}>
               <Checkbox checked={personName.indexOf(name) > -1} />
-              <ListItemText primary={name} />
+              <ListItemText primary={name.username} />
             </MenuItem>
           ))}
         </Select>

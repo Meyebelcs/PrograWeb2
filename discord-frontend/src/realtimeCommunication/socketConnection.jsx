@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import { setPendingFriendsInvitations, setFriends, setOnlineUsers } from '../store/actions/friendsActions';
+import {setGroups } from '../store/actions/groupsActions';
 import store from '../store/store';
 import { updateDirectChatHistoryIfActive } from '../shared/utils/chat';
 
@@ -14,8 +15,6 @@ export const connectWithSocketServer = (userDetails) => {
             token: jwtToken,
         }
     });
-
-    console.log(socket);
 
     socket.on('connect', () => {
         console.log('succesfully connected with socket.io server');
@@ -43,6 +42,14 @@ export const connectWithSocketServer = (userDetails) => {
     socket.on('direct-chat-history', (data) => {
         console.log("direct chat history came from server");
         updateDirectChatHistoryIfActive(data);
+    });
+
+    socket.on('groups-list', (data) => {
+        console.log("groups list came from server");
+        console.log(data);
+        const { groups } = data;
+        store.dispatch(setGroups(groups));
+        //updateDirectChatHistoryIfActive(data);
     });
 
 };

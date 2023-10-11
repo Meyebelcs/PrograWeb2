@@ -9,8 +9,7 @@ export const friendsActions={
 
 export const getActions=(dispatch)=>{
     return{
-        sendFriendInvitation:(data,closeDialogHandler)=>
-            dispatch(sendFriendInvitation(data, closeDialogHandler)),
+        sendFriendInvitation:(data,closeDialogHandler)=>dispatch(sendFriendInvitation(data, closeDialogHandler)),
         acceptFriendInvitation:(data)=>dispatch(acceptFriendInvitation(data)),
         rejectFriendInvitation:(data)=>dispatch(rejectFriendInvitation(data)),
     };

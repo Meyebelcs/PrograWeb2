@@ -1,5 +1,6 @@
 const serverStore= require('../serverStore');
 const friendsUpdates=require('../socketHandlers/updates/friends');
+const groupsUpdate=require('../socketHandlers/updates/groups');
 
 const newConnectionHandler = async(socket,io)=>{
     const userDetails=socket.user;
@@ -14,6 +15,9 @@ const newConnectionHandler = async(socket,io)=>{
 
     //update friends list
     friendsUpdates.updateFriends(userDetails.userId);
+
+    //update groups list
+    groupsUpdate.updateGroups(userDetails.userId);
 
 };
 
