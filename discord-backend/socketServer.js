@@ -3,6 +3,8 @@ const newConnectionHandler = require('./socketHandlers/newConnectionHandler');
 const disconnectHandler = require('./socketHandlers/disconnectHandler');
 const directMessageHandler = require("./socketHandlers/directMessageHandler");
 const directChatHistoryHandler = require('./socketHandlers/directChatHistoryHandler');
+const groupMessageHandler = require("./socketHandlers/groupMessageHandlers");
+const groupChatHistoryHandler = require('./socketHandlers/groupChatHistoryHandler');
 
 const serverStore = require('./serverStore');
 
@@ -36,8 +38,17 @@ const registerSocketServer = (server) => {
             directMessageHandler(socket, data);
         });
 
+        socket.on('group-message', (data) => {
+            console.log('Group message');
+            groupMessageHandler(socket, data);
+        });
+
         socket.on('direct-chat-history', (data) => {
             directChatHistoryHandler(socket, data);
+        });
+
+        socket.on('group-chat-history', (data) => {
+            groupChatHistoryHandler(socket, data);
         });
 
         socket.on('disconnect', () => {

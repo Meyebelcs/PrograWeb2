@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/system';
 import { connect } from 'react-redux';
-import { sendDirectMessage } from '../../realtimeCommunication/socketConnection';
+import { sendDirectMessage, sendGroupMessage } from '../../realtimeCommunication/socketConnection';
 
 const MainContainer = styled("div")({
     height: "60px",
@@ -23,7 +23,7 @@ const Input = styled('input')({
 });
 
 
-const NewMessageInput = ({ chosenChatDetails }) => {
+const NewMessageInput = ({ chosenChatDetails, chatType }) => {
     const [message, setMessage] = useState("");
 
     const handleMessageValueChange = (event) => {
@@ -39,10 +39,18 @@ const NewMessageInput = ({ chosenChatDetails }) => {
     const handleSendMessage = () => {
 
         if(message.length>0){
-            sendDirectMessage({
-                receiverUserId: chosenChatDetails.id,
-                content: message,
-            });
+            if(chatType=='DIRECT'){
+                sendDirectMessage({
+                    receiverUserId: chosenChatDetails.id,
+                    content: message,
+                });
+            }else{
+                sendGroupMessage({
+                    groupId: chosenChatDetails.id,
+                    content: message,
+                });
+            }
+            
             setMessage("");
         }
     };

@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import { setPendingFriendsInvitations, setFriends, setOnlineUsers } from '../store/actions/friendsActions';
 import {setGroups } from '../store/actions/groupsActions';
 import store from '../store/store';
-import { updateDirectChatHistoryIfActive } from '../shared/utils/chat';
+import { updateDirectChatHistoryIfActive, updateGroupChatHistoryIfActive } from '../shared/utils/chat';
 
 let socket = null;
 
@@ -23,9 +23,6 @@ export const connectWithSocketServer = (userDetails) => {
 
     socket.on('friends-invitations', (data) => {
         const { pendingInvitations } = data;
-        console.log('friends invitaitons event came');
-        console.log(pendingInvitations);
-
         store.dispatch(setPendingFriendsInvitations(pendingInvitations));
     })
 
@@ -40,25 +37,32 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('direct-chat-history', (data) => {
-        console.log("direct chat history came from server");
         updateDirectChatHistoryIfActive(data);
     });
 
     socket.on('groups-list', (data) => {
-        console.log("groups list came from server");
-        console.log(data);
         const { groups } = data;
         store.dispatch(setGroups(groups));
-        //updateDirectChatHistoryIfActive(data);
+    });
+
+    socket.on('group-chat-history', (data) => {
+        updateGroupChatHistoryIfActive(data);
     });
 
 };
 
 export const sendDirectMessage = (data) => {
-    console.log(data);
     socket.emit("direct-message", data);
+};
+
+export const sendGroupMessage = (data) => {
+    socket.emit("group-message", data);
 };
 
 export const getDirectChatHistory = (data) => {
     socket.emit("direct-chat-history", data);
+};
+
+export const getGroupChatHistory = (data) => {
+    socket.emit("group-chat-history", data);
 };
