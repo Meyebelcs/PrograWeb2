@@ -11,7 +11,7 @@ const MainContainer=styled("div")({
     alignItems:'center',
     overflow:'auto',
 })
-
+//Traemos la lista de invitaciones pendientes
 const PendingInvitationsList = ({pendingFriendsInvitations}) => {
     return (
         <MainContainer>
@@ -27,6 +27,7 @@ const PendingInvitationsList = ({pendingFriendsInvitations}) => {
     );
 };
 
+//Traemos la información del objeto friends desde la store
 const mapStoreStateToProps=({friends})=>{
     return{
         ...friends,

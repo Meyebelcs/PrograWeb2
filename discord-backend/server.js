@@ -21,7 +21,7 @@ app.use('/api/friend-invitation',friendInvitationRoutes);
 app.use('/api/group',groupRoutes);
 
 const server = http.createServer(app);
-SocketServer.registerSocketServer(server);
+SocketServer.registerSocketServer(server);//añadimos nuestro socketServer al servidor
 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{

@@ -10,7 +10,7 @@ const serverStore = require('./serverStore');
 
 const registerSocketServer = (server) => {
     const io = require('socket.io')(server, {
-        cors: {
+        cors: { //Aceptamos peticiones de todos lados por medio de GET y POST
             origin: '*',
             methods: ['GET', 'POST'],
         },
@@ -18,6 +18,7 @@ const registerSocketServer = (server) => {
 
     serverStore.setSocketServerInstance(io);
 
+    //Usamos el middleware para validar que el token sea válido
     io.use((socket, next) => {
         authSocket(socket, next);
     });

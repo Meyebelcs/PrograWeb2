@@ -31,7 +31,7 @@ const postGroup  =async (req, res)=> {
         groupsUpdate.updateGroups(participantId.toString());
     };
 
-    return res.status(201).send('Group has been created');
+    return res.status(201).send('El grupo fue creado');
 };
 
 module.exports = postGroup;

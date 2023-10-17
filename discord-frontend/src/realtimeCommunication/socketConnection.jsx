@@ -10,14 +10,14 @@ export const connectWithSocketServer = (userDetails) => {
 
     const jwtToken = userDetails.token;
 
-    socket = io('http://localhost:5002', {
-        auth: {
+    socket = io('http://localhost:5002', { //le pasamos la dirección de nuestro servidor
+        auth: {//Pasamos el token del usuario
             token: jwtToken,
         }
     });
 
     socket.on('connect', () => {
-        console.log('succesfully connected with socket.io server');
+        console.log('Conectado exitosamente a socket.io server');
         console.log(socket.id);
     });
 

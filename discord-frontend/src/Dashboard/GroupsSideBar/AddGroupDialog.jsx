@@ -81,7 +81,7 @@ const AddGroupDialog = ({
                     <CustomPrimaryButton
                         onClick={handleCreateGroup}
                         disabled={!isFormValid}
-                        label='Send'
+                        label='Enviar'
                         additionalStyles={{
                             marginLeft: "15px",
                             marginRight: "15px",

@@ -21,9 +21,9 @@ const MainContainer=styled('div')({
 const FriendsSideBar = () => {
     return <MainContainer>
         <AddFriendButton/>
-        <FriendsTitle title='Private Messages' />
+        <FriendsTitle title='Mensajes privados' />
         <FriendsList/>
-        <FriendsTitle title='Invitations'/>
+        <FriendsTitle title='Invitaciones'/>
         <PendingInvitationsList/>
     </MainContainer>;
 };
