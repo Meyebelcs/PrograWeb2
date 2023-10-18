@@ -41,7 +41,7 @@ const updateFriends=async(userId)=>{
                 const friendsList=user.friends.map(f=>{
                     return{
                         id:f._id,
-                        mail:f._mail,
+                        mail:f.mail,
                         username:f.username,
                     };
                 });

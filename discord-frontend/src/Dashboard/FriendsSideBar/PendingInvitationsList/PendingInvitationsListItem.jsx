@@ -9,19 +9,19 @@ const PendingInvitationsListItem = ({
     id,
     username,
     mail,
-    acceptFriendInvitation =()=>{},
+    acceptFriendInvitation =()=>{}, //Traemos las funciones para aceptar y rechazar invitaciones 
     rejectFriendInvitation=()=>{},
 }) => {
     const [buttonDisabled, setButtonsDisabled]=useState(false);
 
     const handleAcceptInvitation=()=>{
         acceptFriendInvitation({id});
-        setButtonsDisabled(true);
+        setButtonsDisabled(true); //Desactivamos los botones si aceptamos la invitación
     }
 
     const handleRejectInvitation=()=>{
         rejectFriendInvitation({id});
-        setButtonsDisabled(true);
+        setButtonsDisabled(true); //Desactivamos los botones si rechazamos la invitación
     }
 
     return (
@@ -60,6 +60,7 @@ const PendingInvitationsListItem = ({
     );
 };
 
+//Traemos las acciones desde la store
 const mapActionsToProps=(dispatch)=>{
     return{
         ...getActions(dispatch),

@@ -1,7 +1,8 @@
 import io from 'socket.io-client';
 import { setPendingFriendsInvitations, setFriends, setOnlineUsers } from '../store/actions/friendsActions';
+import {setGroups } from '../store/actions/groupsActions';
 import store from '../store/store';
-import { updateDirectChatHistoryIfActive } from '../shared/utils/chat';
+import { updateDirectChatHistoryIfActive, updateGroupChatHistoryIfActive } from '../shared/utils/chat';
 
 let socket = null;
 
@@ -9,24 +10,19 @@ export const connectWithSocketServer = (userDetails) => {
 
     const jwtToken = userDetails.token;
 
-    socket = io('http://localhost:5002', {
-        auth: {
+    socket = io('http://localhost:5002', { //le pasamos la dirección de nuestro servidor
+        auth: {//Pasamos el token del usuario
             token: jwtToken,
         }
     });
 
-    console.log(socket);
-
     socket.on('connect', () => {
-        console.log('succesfully connected with socket.io server');
+        console.log('Conectado exitosamente a socket.io server');
         console.log(socket.id);
     });
 
     socket.on('friends-invitations', (data) => {
         const { pendingInvitations } = data;
-        console.log('friends invitaitons event came');
-        console.log(pendingInvitations);
-
         store.dispatch(setPendingFriendsInvitations(pendingInvitations));
     })
 
@@ -41,17 +37,32 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('direct-chat-history', (data) => {
-        console.log("direct chat history came from server");
         updateDirectChatHistoryIfActive(data);
+    });
+
+    socket.on('groups-list', (data) => {
+        const { groups } = data;
+        store.dispatch(setGroups(groups));
+    });
+
+    socket.on('group-chat-history', (data) => {
+        updateGroupChatHistoryIfActive(data);
     });
 
 };
 
 export const sendDirectMessage = (data) => {
-    console.log(data);
     socket.emit("direct-message", data);
+};
+
+export const sendGroupMessage = (data) => {
+    socket.emit("group-message", data);
 };
 
 export const getDirectChatHistory = (data) => {
     socket.emit("direct-chat-history", data);
+};
+
+export const getGroupChatHistory = (data) => {
+    socket.emit("group-chat-history", data);
 };

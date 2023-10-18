@@ -22,12 +22,13 @@ const Dashboard = ({setUserDetails}) => {
     const [showPrivateChats, setShowPrivateChats] = useState(true);
 
     useEffect(()=>{
-        const userDetails=localStorage.getItem('user');
+        const userDetails=localStorage.getItem('user'); //obtenemos el usuario del local storage
 
-        if(!userDetails){
+        if(!userDetails){ //si no existe cerramos sesión
             logout();
-        }else{
+        }else{ //Si sí existe asignamos los datos del usuario en la store
            setUserDetails(JSON.parse(userDetails)); 
+           //Pasamos los datos del usuario al socketserver
            connectWithSocketServer(JSON.parse(userDetails));
         }
     },[])

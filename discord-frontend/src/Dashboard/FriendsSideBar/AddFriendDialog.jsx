@@ -12,7 +12,7 @@ import { getActions } from '../../store/actions/friendsActions';
 const AddFriendDialog = ({
     isDialogOpen,
     closeDialogHandler,
-    sendFriendInvitation=()=>{}
+    sendFriendInvitation=()=>{} //Esta función viene de la store
 }) => {
 
     const [mail,setMail]=useState('');
@@ -29,7 +29,7 @@ const AddFriendDialog = ({
         setMail('');
     };
 
-    useEffect(()=>{
+    useEffect(()=>{ //Observa cambios en la variable mail y revisa si es va´lido
 
         setIsFormValid(validateMail(mail));
         
@@ -66,7 +66,7 @@ const AddFriendDialog = ({
                     <CustomPrimaryButton
                         onClick={handleSendInvitation}
                         disabled={!isFormValid}
-                        label='Send'
+                        label='Enviar'
                         additionalStyles={{
                             marginLeft:'15px',
                             marginRight:'15px',
@@ -79,10 +79,12 @@ const AddFriendDialog = ({
     );
 };
 
+//Traemos las acciones del store para poderlas usar en el componente
 const mapActionsToProps=(dispatch)=>{
     return{
         ...getActions(dispatch),
     };
 };
 
+//Connect conecta el componente a la store
 export default connect(null, mapActionsToProps)(AddFriendDialog);

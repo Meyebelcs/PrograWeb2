@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 const FriendsListItem = ({ id, username, isOnline, setChosenChatDetails }) => {
 
-    const handleChoosenActiveConversation = () => {
+    const handleChoosenActiveConversation = () => {//Mandamos a guardar los datos de la conversación seleccionada
         setChosenChatDetails({ id: id, name: username }, chatTypes.DIRECT);
     };
 
@@ -44,6 +44,7 @@ const FriendsListItem = ({ id, username, isOnline, setChosenChatDetails }) => {
     );
 };
 
+//Traemos las acciones de la store
 const mapActionsToProps = (dispatch) => {
     return {
         ...getActions(dispatch),

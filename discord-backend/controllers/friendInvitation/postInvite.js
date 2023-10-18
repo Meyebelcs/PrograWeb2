@@ -30,7 +30,7 @@ const postInvite=async(req,res)=>{
     });
 
     if (invitationAlreadyReceived){
-        return res.status(409).send('Invitation has been already sent');
+        return res.status(409).send('La invitación ya fue enviada');
     }
 
     //check if the user which we would like to invite is already our friend
@@ -41,7 +41,7 @@ const postInvite=async(req,res)=>{
     if(usersAlreadyFriends){
         return res
         .status(409)
-        .send('Este usuarios ya es tu amigo. Por favor revise la lista de amigos');
+        .send('Este usuario ya es tu amigo. Por favor revise la lista de amigos');
     }
 
      //create new invitation in database
@@ -55,7 +55,7 @@ const postInvite=async(req,res)=>{
     //send pending invitations update to specific user
     friendsUpdates.updateFriendsPendingInvitations(targetUser._id.toString());
 
-    return res.status(201).send('Invitation has been sent');
+    return res.status(201).send('La invitación fue envíada');
 };
 
 module.exports=postInvite;

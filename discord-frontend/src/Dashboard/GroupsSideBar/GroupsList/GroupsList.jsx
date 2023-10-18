@@ -1,6 +1,7 @@
 import React from 'react';
 import {styled} from '@mui/system';
 import GroupsListItem from './GroupsListItem';
+import {connect} from 'react-redux';
 
 const DUMMY_GROUPS = [
     {
@@ -22,18 +23,24 @@ const MainContainer=styled("div")({
     width:"100%",
 });
 
-const GroupsList = () => {
+const GroupsList = ({groups}) => {
     return (
         <MainContainer>
-            {DUMMY_GROUPS.map(f=>(
+            {groups.map((g)=>(
                 <GroupsListItem
-                    groupName={f.groupName}
-                    id={f.id}
-                    key={f.id}
+                    groupName={g.name}
+                    id={g.id}
+                    key={g.id}
                 />
             ))}
         </MainContainer>
     );
 };
 
-export default GroupsList;
+const mapStoreStateToProps=({groups})=>{
+    return {
+        ...groups,
+    };
+};
+
+export default connect(mapStoreStateToProps)(GroupsList);

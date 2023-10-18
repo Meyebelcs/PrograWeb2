@@ -9,8 +9,7 @@ export const friendsActions={
 
 export const getActions=(dispatch)=>{
     return{
-        sendFriendInvitation:(data,closeDialogHandler)=>
-            dispatch(sendFriendInvitation(data, closeDialogHandler)),
+        sendFriendInvitation:(data,closeDialogHandler)=>dispatch(sendFriendInvitation(data, closeDialogHandler)),
         acceptFriendInvitation:(data)=>dispatch(acceptFriendInvitation(data)),
         rejectFriendInvitation:(data)=>dispatch(rejectFriendInvitation(data)),
     };
@@ -40,11 +39,10 @@ export const setOnlineUsers=(onlineUsers)=>{
 const sendFriendInvitation=(data,closeDialogHandler)=>{
     return async (dispatch)=>{
         const response=await api.sendFriendInvitation(data);
-        console.log(response);
         if(response.error){
             dispatch(openAlertMessage(response.exception?.response?.data));
         }else{
-            dispatch(openAlertMessage('Invitation has been sent!'));
+            dispatch(openAlertMessage('La invitación fue envíada!'));
             closeDialogHandler();
         }
     };
@@ -57,7 +55,7 @@ const acceptFriendInvitation=(data)=>{
         if(response.error){
             dispatch(openAlertMessage(response.exception?.response.data));
         }else{
-            dispatch(openAlertMessage('Invitation accepted!'));
+            dispatch(openAlertMessage('Invitación aceptada!'));
         }
     }
 }
@@ -69,7 +67,7 @@ const rejectFriendInvitation=(data)=>{
         if(response.error){
             dispatch(openAlertMessage(response.exception?.response.data));
         }else{
-            dispatch(openAlertMessage('Invitation rejected!'));
+            dispatch(openAlertMessage('Invitación rechazada!'));
         }
     }
 }

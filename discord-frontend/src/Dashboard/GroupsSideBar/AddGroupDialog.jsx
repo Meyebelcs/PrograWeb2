@@ -7,36 +7,53 @@ import DialogContentText from '@mui/material/DialogContentText';
 import InputWithLabel from '../../shared/components/InputWithLabel';
 import CustomPrimaryButton from '../../shared/components/CustomPrimaryButton';
 import MultipleSelectCheckmarks from './MultipleSelect';
+import {connect} from 'react-redux';  
+import { getActions } from '../../store/actions/groupsActions';  
 
 const AddGroupDialog = ({
+    friends,
     isDialogOpen,
     closeDialogHandler,
-    cretaeGroup=()=>{}
+    createGroup=()=>{}
 }) => {
 
-    const [mail,setMail]=useState('');
+    const [name,setName]=useState('');
+    const [selectedUsers, setSelectedUsers] = useState([]);
     const [isFormValid,setIsFormValid]=useState('');
 
     const handleCreateGroup=()=>{
-        //create group request to server
-    }
+        createGroup({
+                name: name,
+                participants: selectedUsers,
+            }, handleCloseDialog);
+    };
 
     const handleCloseDialog=()=>{
         closeDialogHandler();
-        //setMail('');
+        setName('');
+        setSelectedUsers([]);
     };
 
     useEffect(()=>{
 
-        setIsFormValid(validateMail(mail));
+        setIsFormValid(validateMail(name) && validateUsers(selectedUsers));
         
-    },[mail, setIsFormValid]);
+    },[name, selectedUsers, setIsFormValid]);
 
-    const validateMail=(mail)=>{
-        if(!mail.match('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')){
-            return false;
-        }else{
+    const validateMail=(name)=>{
+        if(name.length>=3){
             return true;
+        }else{
+            return false;
+        }
+
+    };
+
+    const validateUsers=(users)=>{
+        if(users.length>=2){
+            return true;
+        }else{
+            return false;
         }
 
     };
@@ -54,17 +71,17 @@ const AddGroupDialog = ({
                     <InputWithLabel
                         label='Nombre'
                         type='text'
-                        value={mail}
-                        setValue={setMail}
+                        value={name}
+                        setValue={setName}
                         placeholder='Ingresa un nombre'
                     />
-                    <MultipleSelectCheckmarks/>
+                    <MultipleSelectCheckmarks friends={friends} setSelectedUsers={setSelectedUsers}/>
                 </DialogContent>
                 <DialogActions>
                     <CustomPrimaryButton
                         onClick={handleCreateGroup}
                         disabled={!isFormValid}
-                        label='Send'
+                        label='Enviar'
                         additionalStyles={{
                             marginLeft: "15px",
                             marginRight: "15px",
@@ -79,4 +96,17 @@ const AddGroupDialog = ({
     );
 };
 
-export default AddGroupDialog;
+
+const mapStoreStateToProps=({friends})=>{
+    return {
+        ...friends,
+    };
+};
+
+const mapActionsToProps=(dispatch)=>{
+    return{
+        ...getActions(dispatch),
+    };
+};
+
+export default connect(mapStoreStateToProps,mapActionsToProps)(AddGroupDialog);

@@ -9,7 +9,7 @@ const postAccept=async(req,res)=>{
         const invitation=await friendInvitation.findById(id);
 
         if(!invitation){
-            return res.status(401).send('Error occured.Please try again');
+            return res.status(401).send('Ocurrió un error. Por favor intente de nuevo');
         }
 
         const {senderId,receiverId}=invitation;
@@ -34,7 +34,7 @@ const postAccept=async(req,res)=>{
         //update list of friends pending invitations
         friendsUpdates.updateFriendsPendingInvitations(receiverId.toString());
 
-        return res.status(200).send('Friend successfuly added');
+        return res.status(200).send('Amigo agregado exitosamente');
 
     }catch(err){
         console.log(err);

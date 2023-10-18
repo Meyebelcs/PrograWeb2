@@ -9,14 +9,14 @@ const MainContainer=styled("div")({
 });
 
 const checkOnlineUsers=(friends=[], onlineUsers=[])=>{
-    friends.forEach(f=>{
+    friends.forEach(f=>{//Comparamos la lista de amigos con los usuarios que están en línea
         const isUserOnline=onlineUsers.find(user=>user.userId===f.id);
         f.isOnline=isUserOnline?true:false;
     });
 
     return friends;
 };
-
+//Traemos la lista de amigos y la lista de usuarios en línea
 const FriendsList = ({friends, onlineUsers}) => {
     return (
         <MainContainer>
@@ -32,6 +32,7 @@ const FriendsList = ({friends, onlineUsers}) => {
     );
 };
 
+//Treaemos el objeto friends desde el estado global
 const mapStoreStateToProps=({friends})=>{
     return {
         ...friends,

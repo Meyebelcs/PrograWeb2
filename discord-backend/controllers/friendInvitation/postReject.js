@@ -16,7 +16,7 @@ const postReject=async(req,res)=>{
         //update pending invitations
         friendsUpdates.updateFriendsPendingInvitations(userId);
 
-        return res.status(200).send('Invitation successfully rejected');
+        return res.status(200).send('La invitación ha sido rechazada exitosamente');
 
     }catch(err){
         console.log(err);

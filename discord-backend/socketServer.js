@@ -3,12 +3,14 @@ const newConnectionHandler = require('./socketHandlers/newConnectionHandler');
 const disconnectHandler = require('./socketHandlers/disconnectHandler');
 const directMessageHandler = require("./socketHandlers/directMessageHandler");
 const directChatHistoryHandler = require('./socketHandlers/directChatHistoryHandler');
+const groupMessageHandler = require("./socketHandlers/groupMessageHandlers");
+const groupChatHistoryHandler = require('./socketHandlers/groupChatHistoryHandler');
 
 const serverStore = require('./serverStore');
 
 const registerSocketServer = (server) => {
     const io = require('socket.io')(server, {
-        cors: {
+        cors: { //Aceptamos peticiones de todos lados por medio de GET y POST
             origin: '*',
             methods: ['GET', 'POST'],
         },
@@ -16,6 +18,7 @@ const registerSocketServer = (server) => {
 
     serverStore.setSocketServerInstance(io);
 
+    //Usamos el middleware para validar que el token sea válido
     io.use((socket, next) => {
         authSocket(socket, next);
     });
@@ -36,8 +39,17 @@ const registerSocketServer = (server) => {
             directMessageHandler(socket, data);
         });
 
+        socket.on('group-message', (data) => {
+            console.log('Group message');
+            groupMessageHandler(socket, data);
+        });
+
         socket.on('direct-chat-history', (data) => {
             directChatHistoryHandler(socket, data);
+        });
+
+        socket.on('group-chat-history', (data) => {
+            groupChatHistoryHandler(socket, data);
         });
 
         socket.on('disconnect', () => {

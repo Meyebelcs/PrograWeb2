@@ -7,6 +7,7 @@ require('dotenv').config();
 const SocketServer=require('./socketServer');
 const authRoutes=require("./routes/authRoutes");
 const friendInvitationRoutes=require("./routes/friendInvitationRoutes");
+const groupRoutes=require("./routes/groupRoutes");
 
 const PORT =process.env.PORT || process.env.API_PORT;
 
@@ -17,9 +18,10 @@ app.use(cors());
 //Registro de las rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/friend-invitation',friendInvitationRoutes);
+app.use('/api/group',groupRoutes);
 
 const server = http.createServer(app);
-SocketServer.registerSocketServer(server);
+SocketServer.registerSocketServer(server);//añadimos nuestro socketServer al servidor
 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{

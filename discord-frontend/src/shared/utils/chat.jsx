@@ -33,18 +33,13 @@ const updateChatHistoryIfSameConversationActive = ({
   }
 };
 
-
-/* export const updateGroupChatHistoryIfActive = (data) => {
+export const updateGroupChatHistoryIfActive = (data) => {
     const {messages, id}=data;
 
     //find id of user from token and id from active conversation
-    const groupId= store.getState().chat.chosenChatDetails?.id;
-    console.log(id);
-    console.log(groupId);
-
-    if(groupId){
-        const groupInConversation = groupId;
-
+    const groupInConversation= store.getState().chat.chosenChatDetails?.id;
+    
+    if(groupInConversation){
         updateChatGroupIfSameConversationActive({
             id,
             groupInConversation,
@@ -52,8 +47,19 @@ const updateChatHistoryIfSameConversationActive = ({
         });
     }
 };
- */
-/* export const updateSubgroupChatHistoryIfActive = (data) => {
+
+
+ const updateChatGroupIfSameConversationActive = ({
+    id,
+    groupInConversation,
+    messages
+})=>{
+    if(groupInConversation===id){
+        store.dispatch(setMessages(messages));
+    }
+};
+
+/*export const updateSubgroupChatHistoryIfActive = (data) => {
     const {messages, id}=data;
 
     //find id of user from token and id from active conversation
@@ -70,22 +76,4 @@ const updateChatHistoryIfSameConversationActive = ({
             messages,
         });
     }
-}; */
-
-
-
-/* const updateChatGroupIfSameConversationActive = ({
-    id,
-    groupInConversation,
-    messages
-})=>{
-
-    console.log(id);
-    console.log(groupInConversation);
-
-    if(groupInConversation===id){
-
-        store.dispatch(setMessages(messages));
-
-    }
-}; */
+};*/

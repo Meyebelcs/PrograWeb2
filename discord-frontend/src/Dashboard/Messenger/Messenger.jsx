@@ -14,10 +14,10 @@ const MainContainer = styled('div')({
     borderRadius: "20px",
 });
 
-const Messenger = ({ chosenChatDetails }) => {
+const Messenger = ({ chosenChatDetails, chatType }) => {
     return (
         <MainContainer>
-            {!chosenChatDetails ? (<WelcomeMessage />) : (<MessengerContent chosenChatDetails={chosenChatDetails} />)}
+            {!chosenChatDetails ? (<WelcomeMessage />) : (<MessengerContent chosenChatDetails={chosenChatDetails} chatType={chatType} />)}
         </MainContainer>
 
     );

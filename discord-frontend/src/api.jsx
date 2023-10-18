@@ -82,6 +82,18 @@ export const rejectFriendInvitation=async(data)=>{
     }
 };
 
+export const createGroup=async(data)=>{
+    try{
+        return await apiClient.post('/group/create',data);
+    }catch(exception){
+        checkResponseCode(exception);
+        return{
+            error:true,
+            exception,
+        };
+    }
+};
+
 const checkResponseCode=(exception)=>{
     const responseCode=exception?.response?.status;
 
