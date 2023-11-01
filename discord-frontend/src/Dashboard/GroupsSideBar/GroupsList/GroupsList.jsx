@@ -29,6 +29,8 @@ const GroupsList = ({groups}) => {
             {groups.map((g)=>(
                 <GroupsListItem
                     groupName={g.name}
+                    participants={g.participants}
+                    subgroups={g.subgroups}
                     id={g.id}
                     key={g.id}
                 />

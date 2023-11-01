@@ -2,6 +2,7 @@ import {groupsActions} from '../actions/groupsActions';
 
 const initState={
     groups:[],
+    selectedGroupParticipants:[]
 }
 
 const reducer=(state=initState, action)=>{
@@ -10,6 +11,11 @@ const reducer=(state=initState, action)=>{
             return{
                 ...state,
                 groups:action.groups
+            };
+         case groupsActions.SET_PARTICIPANTS:
+            return{
+                ...state,
+                selectedGroupParticipants:action.participants
             };
         default:
             return state;
