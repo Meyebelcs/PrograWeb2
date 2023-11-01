@@ -4,7 +4,8 @@ const initState={
     chosenChatDetails:null,
    /*  chosenSubgroup:null, */
     chatType:null,
-    messages:[]
+    messages:[],
+    chosenGroup:null
 };
 
 const reducer=(state=initState, action)=>{
@@ -26,6 +27,11 @@ const reducer=(state=initState, action)=>{
             return{
                 ...state,
                 messages: action.messages,
+            }; 
+        case chatActions.SET_CHOSEN_GROUP:
+            return{
+                ...state,
+                chosenGroup:action.group
             };
         default:
             return state;

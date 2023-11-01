@@ -16,12 +16,6 @@ const groupSchema = new Schema({
             ref: "Message",
         },
     ],
-    subgroups: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Subgroup",
-        },
-    ],
 });
 
-module.exports = mongoose.model('Group', groupSchema);
+module.exports = mongoose.model('Subgroup', groupSchema);
