@@ -4,6 +4,7 @@ import MainPageButton from './MainPageButton';
 import Button from '@mui/material/Button';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PersonIcon from '@mui/icons-material/Person';
+import CreateRoomButton from './CreateRoomButton';
 
 const MainContainer=styled('div')({
     width:'72px',
@@ -51,7 +52,9 @@ const SideBar = ({ onPrivateChatsClick, onGroupChatsClick }) => {
             >
             <GroupsIcon/>  
             </Button>
+            <CreateRoomButton/>
         </MainContainer>
+
     );
 };
 
