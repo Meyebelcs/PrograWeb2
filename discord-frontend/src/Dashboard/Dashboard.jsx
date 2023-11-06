@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import { getActions } from '../store/actions/authActions';
 import GroupsSideBar from './GroupsSideBar/GroupsSideBar';
 import { connectWithSocketServer } from '../realtimeCommunication/socketConnection';
+import Room from './Room/Room';
 
 const Wrapper = styled('div')({
     width:'100%',
@@ -17,7 +18,7 @@ const Wrapper = styled('div')({
     backgroundImage: 'linear-gradient(#2A00B7 0%, #42006C 100%)'
 });
 
-const Dashboard = ({setUserDetails}) => {
+const Dashboard = ({setUserDetails, isUserInRoom}) => {
     
     const [showPrivateChats, setShowPrivateChats] = useState(true);
 
@@ -41,7 +42,14 @@ const Dashboard = ({setUserDetails}) => {
         {showPrivateChats ? <FriendsSideBar /> : <GroupsSideBar />}
         <Messenger/>
         <AppBar/>
+        {isUserInRoom && <Room/>}
     </Wrapper>;
+};
+
+const mapStoreStateToProps = ({ room }) => {
+    return {
+        ...room,
+    };
 };
 
 const mapActionsToProps=(dispatch)=>{
@@ -50,4 +58,4 @@ const mapActionsToProps=(dispatch)=>{
     };
 };
 
-export default connect(null,mapActionsToProps)(Dashboard);
+export default connect(mapStoreStateToProps,mapActionsToProps)(Dashboard);
