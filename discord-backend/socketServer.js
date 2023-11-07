@@ -4,8 +4,9 @@ const disconnectHandler = require('./socketHandlers/disconnectHandler');
 const directMessageHandler = require("./socketHandlers/directMessageHandler");
 const directChatHistoryHandler = require('./socketHandlers/directChatHistoryHandler');
 const groupMessageHandler = require("./socketHandlers/groupMessageHandlers");
-const groupChatHistoryHandler = require('./socketHandlers/groupChatHistoryHandler');
 const roomCreateHandler = require('./socketHandlers/roomCreateHandler');
+const groupChatHistoryHandler = require('./socketHandlers/groupChatHistoryHandler');
+
 
 const serverStore = require('./serverStore');
 

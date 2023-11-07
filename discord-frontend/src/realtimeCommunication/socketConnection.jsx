@@ -3,6 +3,7 @@ import { setPendingFriendsInvitations, setFriends, setOnlineUsers } from '../sto
 import {setGroups } from '../store/actions/groupsActions';
 import store from '../store/store';
 import { updateDirectChatHistoryIfActive, updateGroupChatHistoryIfActive } from '../shared/utils/chat';
+import * as roomHandler from './roomHandler';
 
 let socket = null;
 
@@ -45,13 +46,16 @@ export const connectWithSocketServer = (userDetails) => {
         store.dispatch(setGroups(groups));
     });
 
+    socket.on('room-create', (data) => {
+        roomHandler.newRoomCreated(data);
+    });
+
     socket.on('group-chat-history', (data) => {
         updateGroupChatHistoryIfActive(data);
     });
 
-    socket.on('room-create', (data) => {
-        console.log('created room details came from the server');
-        console.log(data);
+    socket.on('active-rooms', (data) => {
+        roomHandler.updateActiveRooms(data);
     });
 };
 
