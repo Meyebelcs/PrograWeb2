@@ -27,6 +27,7 @@ export const updateActiveRooms = (data) => {
             }
         });
     });
+    //Test correction
 
     store.dispatch(setActiveRooms(rooms));
 }
