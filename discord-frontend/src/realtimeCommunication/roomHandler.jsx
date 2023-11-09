@@ -30,5 +30,10 @@ export const updateActiveRooms = (data) => {
     //Test correction
 
     store.dispatch(setActiveRooms(rooms));
-}
+};
 
+export const joinRoom = (roomId) => {
+    store.dispatch(setRoomDetails({ roomId }));
+    store.dispatch(setOpenRoom(false, true));
+    socketConnection.joinRoom({ roomId });
+};

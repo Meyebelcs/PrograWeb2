@@ -7,6 +7,7 @@ import CreateRoomButton from './CreateRoomButton';
 import { connect } from 'react-redux';
 import Avatar from '../../shared/components/Avatar';
 import { Tooltip } from '@mui/material';
+import * as roomHandler from '../../realtimeCommunication/roomHandler';
 
 //import MainPageButton from './MainPageButton';
 
@@ -29,7 +30,7 @@ const ActiveRoomButton = ({
 }) => {
     const handleJoinActiveRoom = () => {
         if(amountOfParticipants < 4){
-            //Join room
+            roomHandler.joinRoom(roomId);
         }
     }
 
