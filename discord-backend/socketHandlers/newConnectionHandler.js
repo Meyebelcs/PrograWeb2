@@ -1,6 +1,7 @@
 const serverStore= require('../serverStore');
 const friendsUpdates=require('../socketHandlers/updates/friends');
 const groupsUpdate=require('../socketHandlers/updates/groups');
+const roomsUpdate=require('./updates/rooms');
 
 const newConnectionHandler = async(socket,io)=>{
     //Obtenemos los datos del usuario
@@ -21,6 +22,9 @@ const newConnectionHandler = async(socket,io)=>{
     //update groups list
     groupsUpdate.updateGroups(userDetails.userId);
 
+    setTimeout(() => {
+        roomsUpdate.updateRooms(socket.id);
+    }, [500]);
 };
 
 module.exports=newConnectionHandler;
