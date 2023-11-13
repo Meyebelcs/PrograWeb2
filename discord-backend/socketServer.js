@@ -4,9 +4,11 @@ const disconnectHandler = require('./socketHandlers/disconnectHandler');
 const directMessageHandler = require("./socketHandlers/directMessageHandler");
 const directChatHistoryHandler = require('./socketHandlers/directChatHistoryHandler');
 const groupMessageHandler = require("./socketHandlers/groupMessageHandlers");
+const subgroupMessageHandler = require("./socketHandlers/subgroupMessageHandlers");
 const roomCreateHandler = require('./socketHandlers/roomCreateHandler');
 const roomJoinHandler = require('./socketHandlers/roomJoinHandler');
 const groupChatHistoryHandler = require('./socketHandlers/groupChatHistoryHandler');
+const subgroupChatHistoryHandler = require('./socketHandlers/subgroupChatHistoryHandler');
 const roomLeaveHandler = require('./socketHandlers/roomLeaveHandler');
 const roomInitializeConnectionHandler = require('./socketHandlers/roomInitializeConnectionHandler');
 const roomSignalingDataHandler = require('./socketHandlers/roomSignalingDataHandler');
@@ -48,12 +50,22 @@ const registerSocketServer = (server) => {
             groupMessageHandler(socket, data);
         });
 
+        socket.on('subgroup-message', (data) => {
+            console.log('Subgroup message');
+            console.log(data);
+            subgroupMessageHandler(socket, data);
+        });
+
         socket.on('direct-chat-history', (data) => {
             directChatHistoryHandler(socket, data);
         });
 
         socket.on('group-chat-history', (data) => {
             groupChatHistoryHandler(socket, data);
+        });
+
+        socket.on('subgroup-chat-history', (data) => {
+            subgroupChatHistoryHandler(socket, data);
         });
 
         socket.on('room-create', () =>{

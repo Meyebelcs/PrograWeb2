@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/system';
 import { connect } from 'react-redux';
-import { sendDirectMessage, sendGroupMessage } from '../../realtimeCommunication/socketConnection';
+import { sendDirectMessage, sendGroupMessage, sendSubgroupMessage } from '../../realtimeCommunication/socketConnection';
 
 const MainContainer = styled("div")({
     height: "60px",
@@ -44,9 +44,14 @@ const NewMessageInput = ({ chosenChatDetails, chatType }) => {
                     receiverUserId: chosenChatDetails.id,
                     content: message,
                 });
-            }else{
+            }else if(chatType=='GROUP'){
                 sendGroupMessage({
                     groupId: chosenChatDetails.id,
+                    content: message,
+                });
+            }else if(chatType=='SUBGROUP'){
+                sendSubgroupMessage({
+                    subgroupId: chosenChatDetails.id,
                     content: message,
                 });
             }
