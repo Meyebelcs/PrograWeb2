@@ -95,7 +95,7 @@ const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsC
             >
             <GroupsIcon/>  
             </Button>
-            <CreateRoomButton/>
+            <CreateRoomButton isUserInRoom={isUserInRoom}/>
             {activeRooms.map(room => (
                 <ActiveRoomButton 
                     roomId={room.roomId}
