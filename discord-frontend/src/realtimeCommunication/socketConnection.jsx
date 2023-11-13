@@ -88,12 +88,20 @@ export const sendGroupMessage = (data) => {
     socket.emit("group-message", data);
 };
 
+export const sendSubgroupMessage = (data) => {
+    socket.emit("subgroup-message", data);
+};
+
 export const getDirectChatHistory = (data) => {
     socket.emit("direct-chat-history", data);
 };
 
 export const getGroupChatHistory = (data) => {
     socket.emit("group-chat-history", data);
+};
+
+export const getSubgroupChatHistory = (data) => {
+    socket.emit("subgroup-chat-history", data);
 };
 
 export const createNewRoom = () => {

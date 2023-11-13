@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { styled } from "@mui/system";
 import Messages from "./Messages/Messages";
 import NewMessageInput from "./NewMessageInput";
-import { getDirectChatHistory, getGroupChatHistory } from "../../realtimeCommunication/socketConnection";
+import { getDirectChatHistory, getGroupChatHistory, getSubgroupChatHistory } from "../../realtimeCommunication/socketConnection";
 
 const Wrapper = styled("div")({
     flexGrow: 1,
@@ -14,9 +14,13 @@ const MessengerContent = ({ chosenChatDetails, chatType }) => {
             getDirectChatHistory({
                 receiverUserId: chosenChatDetails.id,
             });
-        }else{
+        }else if(chatType=='GROUP'){
             getGroupChatHistory({
                 groupId: chosenChatDetails.id,
+            });
+        }else if(chatType=='SUBGROUP'){
+            getSubgroupChatHistory({
+                subgroupId: chosenChatDetails.id,
             });
         }
         

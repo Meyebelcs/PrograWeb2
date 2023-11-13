@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {styled} from '@mui/system';
 import GroupsListItem from './GroupsListItem';
 import {connect} from 'react-redux';
@@ -24,6 +24,13 @@ const MainContainer=styled("div")({
 });
 
 const GroupsList = ({groups}) => {
+
+    const [expandedPanel, setExpandedPanel] = useState(null);
+
+    const handleAccordionChange = (panel) => {
+        setExpandedPanel(expandedPanel === panel ? null : panel);
+    };
+
     return (
         <MainContainer>
             {groups.map((g)=>(
@@ -33,6 +40,8 @@ const GroupsList = ({groups}) => {
                     subgroups={g.subgroups}
                     id={g.id}
                     key={g.id}
+                    expanded={expandedPanel === `panel-${g.id}`}
+                    onAccordionChange={() => handleAccordionChange(`panel-${g.id}`)}
                 />
             ))}
         </MainContainer>
