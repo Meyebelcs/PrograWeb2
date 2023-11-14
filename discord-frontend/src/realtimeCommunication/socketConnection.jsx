@@ -43,6 +43,7 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('groups-list', (data) => {
+        console.log(data);
         const { groups } = data;
         store.dispatch(setGroups(groups));
     });
@@ -56,6 +57,7 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('active-rooms', (data) => {
+        console.log(data);
         roomHandler.updateActiveRooms(data);
     });
 
@@ -104,8 +106,9 @@ export const getSubgroupChatHistory = (data) => {
     socket.emit("subgroup-chat-history", data);
 };
 
-export const createNewRoom = () => {
-    socket.emit("room-create");
+export const createNewRoom = (data) => {
+    console.log(data);
+    socket.emit("room-create",data);
 }
 
 export const joinRoom = (data) => {

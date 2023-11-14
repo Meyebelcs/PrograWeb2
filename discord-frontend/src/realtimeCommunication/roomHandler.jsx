@@ -7,9 +7,17 @@ export const createNewRoom = () =>{
     const successCalbackFunc = () => {
         store.dispatch(setOpenRoom(true, true));
 
+        const chatId=store.getState().chat.chosenChatDetails.id;
+        const chatType=store.getState().chat.chatType;
+
+        const chatInfo={
+            chatId:chatId,
+            chatType:chatType
+        }
+
         const audioOnly = store.getState().room.audioOnly;
         store.dispatch(setIsUserJoinedOnlyWithAudio(audioOnly));
-        socketConnection.createNewRoom();
+        socketConnection.createNewRoom(chatInfo);
     };
 
     const audioOnly = store.getState().room.audioOnly;
@@ -25,14 +33,58 @@ export const updateActiveRooms = (data) => {
     const { activeRooms } = data;
     
     const friends = store.getState().friends.friends;
+    const groups = store.getState().groups.groups;
     const rooms = [];
 
     const userId = store.getState().auth.userDetails?._id;
+    const username = store.getState().auth.userDetails?.username;
 
     activeRooms.forEach((room) => {
         const isRoomCreatedByMe = room.roomCreator.userId === userId;
 
-        if(isRoomCreatedByMe){
+        if(room.chatType=='GROUP'){
+            if (isRoomCreatedByMe) {
+                rooms.push({ ...room, creatorUsername: 'Me' });
+            } else {
+                groups.forEach((g) => {
+                    if (g.id === room.chatId) {
+                        rooms.push({ ...room, creatorUsername: g.name });
+                    }
+                });
+            }
+
+        }else if(room.chatType=='DIRECT'){
+            console.log('direct');
+            if (isRoomCreatedByMe) {
+                rooms.push({ ...room, creatorUsername: 'Me' });
+            } else {
+                    if (userId === room.chatId) {
+                        rooms.push({ ...room, creatorUsername: username });
+                    }
+            }
+        }else if(room.chatType=='SUBGROUP'){
+            if (isRoomCreatedByMe) {
+                rooms.push({ ...room, creatorUsername: 'Me' });
+            } else {
+                groups.forEach((g) => {
+                    const subgroups=g.subgroups;
+                    subgroups.forEach((s) => {
+                        console.log(room.chatId);
+                        if (s._id === room.chatId) {
+                            /* const participants= s.participants;
+                            participants.forEach((p) => {
+                                if (p === userId) { */
+                                    rooms.push({ ...room, creatorUsername: s.name });
+                           /*      }
+                            }); */
+                        }
+                    });
+                });
+            }
+
+        }
+        
+        /* if(isRoomCreatedByMe){
             rooms.push({ ...room, creatorUsername: "Me" });
         }else{
             friends.forEach((f) => {
@@ -40,7 +92,7 @@ export const updateActiveRooms = (data) => {
                     rooms.push({...room, creatorUsername: f.username});
                 }
             });
-        }
+        } */
     });
     //Test correction
 

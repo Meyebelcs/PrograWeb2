@@ -49,7 +49,7 @@ const getOnlineUsers=()=>{
 };
 
 //rooms
-const addNewActiveRoom = (userId, socketId) => {
+const addNewActiveRoom = (userId, socketId, chatId, chatType) => {
     const newActiveRoom = {
         roomCreator: {
             userId,
@@ -62,6 +62,8 @@ const addNewActiveRoom = (userId, socketId) => {
             },
         ],
         roomId: uuidv4(),
+        chatId:chatId,
+        chatType
     };
 
     activeRooms = [...activeRooms, newActiveRoom];
