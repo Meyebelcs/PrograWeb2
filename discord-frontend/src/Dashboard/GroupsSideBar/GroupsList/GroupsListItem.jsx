@@ -10,11 +10,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AddSubgroupButton from '../SubgroupsSideBar/AddSubgroupButton';
 import SubgroupListItem from '../SubgroupsSideBar/SubgroupListItem';
 
-const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAccordionChange, setChosenChatDetails, setChosenGroup }) => {
+const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAccordionChange, setChosenChatDetails, setChosenGroup, currentUser }) => {
   const handleChoosenActiveConversation = () => {
     setChosenChatDetails({ id: id, name: groupName, participants: participants }, chatTypes.GROUP);
     setChosenGroup({ id, groupName, participants });
   };
+
+  console.log(currentUser);
+  const userSubgroups = subgroups.filter((g) => g.participants.includes(currentUser._id));
 
   return (
     <Accordion expanded={expanded} onChange={onAccordionChange}
@@ -66,7 +69,7 @@ const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAc
         }}
       >
         <AddSubgroupButton />
-        {subgroups.map((g) => (
+        {userSubgroups.map((g) => (
           <SubgroupListItem
             name={g.name}
             id={g._id}
@@ -84,4 +87,10 @@ const mapActionsToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapActionsToProps)(GroupsListItem);
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.auth.userDetails, // Replace with the actual path to the user information in your Redux store
+  };
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(GroupsListItem);

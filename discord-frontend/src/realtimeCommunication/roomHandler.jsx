@@ -71,12 +71,12 @@ export const updateActiveRooms = (data) => {
                     subgroups.forEach((s) => {
                         console.log(room.chatId);
                         if (s._id === room.chatId) {
-                            /* const participants= s.participants;
+                            const participants= s.participants;
                             participants.forEach((p) => {
-                                if (p === userId) { */
+                                if (p === userId) {
                                     rooms.push({ ...room, creatorUsername: s.name });
-                           /*      }
-                            }); */
+                                }
+                            });
                         }
                     });
                 });
