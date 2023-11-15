@@ -3,7 +3,6 @@ import {styled} from '@mui/system';
 import Button from '@mui/material/Button';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PersonIcon from '@mui/icons-material/Person';
-import CreateRoomButton from './CreateRoomButton';
 import { connect } from 'react-redux';
 import Avatar from '../../shared/components/Avatar';
 import { Tooltip } from '@mui/material';
@@ -61,6 +60,7 @@ const ActiveRoomButton = ({
 };
 
 const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsClick }) => {
+    console.log(isUserInRoom);
     return (
         <MainContainer>
             <Button
@@ -95,7 +95,6 @@ const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsC
             >
             <GroupsIcon/>  
             </Button>
-            <CreateRoomButton isUserInRoom={isUserInRoom}/>
             {activeRooms.map(room => (
                 <ActiveRoomButton 
                     roomId={room.roomId}

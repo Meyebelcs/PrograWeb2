@@ -13,9 +13,6 @@ const updateGroups = async (userId) => {
             .populate('participants', '_id username mail')
             .populate('subgroups', 'name participants');;
 
-
-            console.log(groups.subgroups);
-
             if(groups){
 
                 const groupsList = groups.map(group => {
