@@ -9,12 +9,16 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddSubgroupButton from '../SubgroupsSideBar/AddSubgroupButton';
 import SubgroupListItem from '../SubgroupsSideBar/SubgroupListItem';
+import InCallIndicator from '../../../shared/components/InCallIndicator';
 
-const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAccordionChange, setChosenChatDetails, setChosenGroup }) => {
+const GroupsListItem = ({ id, groupName, isInCall, participants, subgroups, expanded, onAccordionChange, activeRooms, setChosenChatDetails, setChosenGroup, currentUser }) => {
   const handleChoosenActiveConversation = () => {
     setChosenChatDetails({ id: id, name: groupName, participants: participants }, chatTypes.GROUP);
     setChosenGroup({ id, groupName, participants });
   };
+
+  const userSubgroups = subgroups.filter((g) => g.participants.includes(currentUser._id));
+  console.log(userSubgroups);
 
   return (
     <Accordion expanded={expanded} onChange={onAccordionChange}
@@ -56,6 +60,7 @@ const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAc
           >
             {groupName}
           </Typography>
+          {isInCall && <InCallIndicator/>}
         </Button>
       </AccordionSummary>
       <AccordionDetails
@@ -66,11 +71,12 @@ const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAc
         }}
       >
         <AddSubgroupButton />
-        {subgroups.map((g) => (
+        {userSubgroups.map((g) => (
           <SubgroupListItem
             name={g.name}
             id={g._id}
             key={g._id}
+            isInCall={activeRooms.some((room) => room.chatId === g._id && room.chatType==='SUBGROUP')}
           />
         ))}
       </AccordionDetails>
@@ -84,4 +90,10 @@ const mapActionsToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapActionsToProps)(GroupsListItem);
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.auth.userDetails, // Replace with the actual path to the user information in your Redux store
+  };
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(GroupsListItem);

@@ -16,16 +16,31 @@ const checkOnlineUsers=(friends=[], onlineUsers=[])=>{
 
     return friends;
 };
+
+const checkInCallUsers=(friends=[], activeRooms=[])=>{
+    friends.forEach(f=>{//Comparamos la lista de amigos con los usuarios que están en línea
+        // Check if the user is in an active call
+        const isInCall = activeRooms.some((room) => room.roomCreator.userId === f.id && room.chatType==='DIRECT');
+
+        // Update the isInCall property
+        f.isInCall = isInCall;
+    });
+
+    return friends;
+};
 //Traemos la lista de amigos y la lista de usuarios en línea
-const FriendsList = ({friends, onlineUsers}) => {
+const FriendsList = ({friends, onlineUsers, activeRooms}) => {
+    const friendsWithStatus = checkInCallUsers(checkOnlineUsers(friends, onlineUsers), activeRooms);
+    
     return (
         <MainContainer>
-            {checkOnlineUsers(friends,onlineUsers).map((f)=>(
+            {friendsWithStatus.map((f)=>(
                 <FriendsListItem
                     username={f.username}
                     id={f.id}
                     key={f.id}
                     isOnline={f.isOnline}
+                    isInCall={f.isInCall}
                 />
             ))}
         </MainContainer>
@@ -33,9 +48,10 @@ const FriendsList = ({friends, onlineUsers}) => {
 };
 
 //Treaemos el objeto friends desde el estado global
-const mapStoreStateToProps=({friends})=>{
+const mapStoreStateToProps=({friends,room})=>{
     return {
         ...friends,
+        ...room,
     };
 };
 

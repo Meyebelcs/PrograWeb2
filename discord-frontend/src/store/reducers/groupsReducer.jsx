@@ -2,7 +2,8 @@ import {groupsActions} from '../actions/groupsActions';
 
 const initState={
     groups:[],
-    selectedGroupParticipants:[]
+    selectedGroupParticipants:[],
+    isInCall:null,
 }
 
 const reducer=(state=initState, action)=>{

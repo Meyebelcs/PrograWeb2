@@ -23,7 +23,19 @@ const MainContainer=styled("div")({
     width:"100%",
 });
 
-const GroupsList = ({groups}) => {
+const checkInCallGroups=(groups=[], activeRooms=[])=>{
+    groups.forEach(g=>{//Comparamos la lista de amigos con los usuarios que están en línea
+        // Check if the user is in an active call
+        const isInCall = activeRooms.some((room) => room.chatId === g.id && room.chatType==='GROUP');
+
+        // Update the isInCall property
+        g.isInCall = isInCall;
+    });
+
+    return groups;
+};
+
+const GroupsList = ({groups, activeRooms}) => {
 
     const [expandedPanel, setExpandedPanel] = useState(null);
 
@@ -33,24 +45,27 @@ const GroupsList = ({groups}) => {
 
     return (
         <MainContainer>
-            {groups.map((g)=>(
+            {checkInCallGroups(groups, activeRooms).map((g)=>(
                 <GroupsListItem
                     groupName={g.name}
+                    isInCall={g.isInCall}
                     participants={g.participants}
                     subgroups={g.subgroups}
                     id={g.id}
                     key={g.id}
                     expanded={expandedPanel === `panel-${g.id}`}
                     onAccordionChange={() => handleAccordionChange(`panel-${g.id}`)}
+                    activeRooms={activeRooms}
                 />
             ))}
         </MainContainer>
     );
 };
 
-const mapStoreStateToProps=({groups})=>{
+const mapStoreStateToProps=({groups,room})=>{
     return {
         ...groups,
+        ...room,
     };
 };
 

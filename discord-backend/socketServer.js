@@ -68,8 +68,8 @@ const registerSocketServer = (server) => {
             subgroupChatHistoryHandler(socket, data);
         });
 
-        socket.on('room-create', () =>{
-            roomCreateHandler(socket);
+        socket.on('room-create', (data) =>{
+            roomCreateHandler(socket,data);
         });
 
         socket.on('room-join', (data) => {
