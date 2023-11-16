@@ -3,13 +3,17 @@ import Button from '@mui/material/Button';
 import Avatar from '../../../shared/components/Avatar';
 import Typography from '@mui/material/Typography';
 import { chatTypes, getActions } from "../../../store/actions/chatActions";
+import InCallIndicator from '../../../shared/components/InCallIndicator';
 import { connect } from 'react-redux';
 
-const SubgroupListItem = ({ id, name, setChosenChatDetails }) => {
+const SubgroupListItem = ({ id, name, setChosenChatDetails, isInCall }) => {
     
     const handleChoosenActiveConversation = () => {//Mandamos a guardar los datos de la conversación seleccionada
         setChosenChatDetails({ id: id, name: name }, chatTypes.SUBGROUP);
     };
+
+    console.log(name);
+    console.log(isInCall);
     
     return (
         <Button
@@ -38,6 +42,7 @@ const SubgroupListItem = ({ id, name, setChosenChatDetails }) => {
             >
                 {name}
             </Typography>
+            {isInCall&&<InCallIndicator/>}
         </Button>
     );
 };

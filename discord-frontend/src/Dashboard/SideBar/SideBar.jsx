@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Avatar from '../../shared/components/Avatar';
 import { Tooltip } from '@mui/material';
 import * as roomHandler from '../../realtimeCommunication/roomHandler';
+import {Typography} from '@mui/material';
 
 //import MainPageButton from './MainPageButton';
 
@@ -59,8 +60,12 @@ const ActiveRoomButton = ({
     </Tooltip>
 };
 
-const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsClick }) => {
-    console.log(isUserInRoom);
+const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsClick, chosenChatDetails }) => {
+   
+    const filteredActiveRooms = activeRooms.filter(room => room.chatId === chosenChatDetails?.id || (room.roomCreator.userId===chosenChatDetails?.id && room.chatType==='DIRECT'));
+    console.log(activeRooms);
+    console.log(chosenChatDetails?.id);
+
     return (
         <MainContainer>
             <Button
@@ -95,7 +100,17 @@ const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsC
             >
             <GroupsIcon/>  
             </Button>
-            {activeRooms.map(room => (
+            <Typography
+                sx={{
+                    textTransform:'uppercase',
+                    color:'#8e9297',
+                    fontSize:'14px',
+                    marginTop:'10px',
+                }}
+            >
+                CALLS
+            </Typography>
+            {filteredActiveRooms.map(room => (
                 <ActiveRoomButton 
                     roomId={room.roomId}
                     creatorUsername={room.creatorUsername}
@@ -109,9 +124,10 @@ const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsC
     );
 };
 
-const mapStoreStateToProps = ({ room }) => {
+const mapStoreStateToProps = ({chat, room }) => {
     return {
         ...room,
+        ...chat
     };
 };
 

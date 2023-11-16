@@ -2,7 +2,7 @@ import {chatActions} from '../actions/chatActions';
 
 const initState={
     chosenChatDetails:null,
-   /*  chosenSubgroup:null, */
+    hasActiveCall:null,
     chatType:null,
     messages:[],
     chosenGroup:null

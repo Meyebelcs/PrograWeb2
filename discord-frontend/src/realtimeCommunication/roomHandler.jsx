@@ -59,7 +59,13 @@ export const updateActiveRooms = (data) => {
                 rooms.push({ ...room, creatorUsername: 'Me' });
             } else {
                     if (userId === room.chatId) {
-                        rooms.push({ ...room, creatorUsername: username });
+                        friends.forEach((f) => {
+                            if(f.id==room.roomCreator.userId){
+                                rooms.push({ ...room, creatorUsername: f.username });
+                            }
+                            
+                        })
+                        
                     }
             }
         }else if(room.chatType=='SUBGROUP'){
@@ -83,16 +89,6 @@ export const updateActiveRooms = (data) => {
             }
 
         }
-        
-        /* if(isRoomCreatedByMe){
-            rooms.push({ ...room, creatorUsername: "Me" });
-        }else{
-            friends.forEach((f) => {
-                if(f.id === room.roomCreator.userId) {
-                    rooms.push({...room, creatorUsername: f.username});
-                }
-            });
-        } */
     });
     //Test correction
 

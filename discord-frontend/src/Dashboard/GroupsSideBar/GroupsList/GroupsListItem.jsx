@@ -9,15 +9,16 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddSubgroupButton from '../SubgroupsSideBar/AddSubgroupButton';
 import SubgroupListItem from '../SubgroupsSideBar/SubgroupListItem';
+import InCallIndicator from '../../../shared/components/InCallIndicator';
 
-const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAccordionChange, setChosenChatDetails, setChosenGroup, currentUser }) => {
+const GroupsListItem = ({ id, groupName, isInCall, participants, subgroups, expanded, onAccordionChange, activeRooms, setChosenChatDetails, setChosenGroup, currentUser }) => {
   const handleChoosenActiveConversation = () => {
     setChosenChatDetails({ id: id, name: groupName, participants: participants }, chatTypes.GROUP);
     setChosenGroup({ id, groupName, participants });
   };
 
-  console.log(currentUser);
   const userSubgroups = subgroups.filter((g) => g.participants.includes(currentUser._id));
+  console.log(userSubgroups);
 
   return (
     <Accordion expanded={expanded} onChange={onAccordionChange}
@@ -59,6 +60,7 @@ const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAc
           >
             {groupName}
           </Typography>
+          {isInCall && <InCallIndicator/>}
         </Button>
       </AccordionSummary>
       <AccordionDetails
@@ -74,6 +76,7 @@ const GroupsListItem = ({ id, groupName, participants, subgroups, expanded, onAc
             name={g.name}
             id={g._id}
             key={g._id}
+            isInCall={activeRooms.some((room) => room.chatId === g._id && room.chatType==='SUBGROUP')}
           />
         ))}
       </AccordionDetails>
