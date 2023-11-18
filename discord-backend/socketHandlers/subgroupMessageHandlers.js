@@ -7,7 +7,7 @@ const groupMessageHandler = async (socket, data) => {
     console.log("subgroup message event is being handled");
 
     const { userId } = socket.user;
-    const { subgroupId, content } = data;
+    const { subgroupId, content, contentType, filename } = data;
 
     // create new message
     const message = await Message.create({
@@ -15,6 +15,8 @@ const groupMessageHandler = async (socket, data) => {
       author: userId,
       date: new Date(),
       type: "SUBGROUP",
+      contentType:contentType,
+      filename:filename
     });
 
     // find if conversation exist with this two users - if not create new

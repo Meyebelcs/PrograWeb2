@@ -7,7 +7,7 @@ const directMessageHandler = async (socket, data) => {
     console.log("direct message event is being handled");
 
     const { userId } = socket.user;
-    const { receiverUserId, content } = data;
+    const { receiverUserId, content, contentType, filename } = data;
 
     // create new message
     const message = await Message.create({
@@ -15,6 +15,9 @@ const directMessageHandler = async (socket, data) => {
       author: userId,
       date: new Date(),
       type: "DIRECT",
+      contentType:contentType,
+      filename:filename
+
     });
 
     // find if conversation exist with this two users - if not create new

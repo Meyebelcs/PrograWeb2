@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/system';
 import { connect } from 'react-redux';
+import {FormControlLabel, Icon, IconButton } from '@mui/material';
 import { sendDirectMessage, sendGroupMessage, sendSubgroupMessage } from '../../realtimeCommunication/socketConnection';
+import { uploadFile } from '../../Firebase/config';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const MainContainer = styled("div")({
     height: "60px",
@@ -43,20 +46,62 @@ const NewMessageInput = ({ chosenChatDetails, chatType }) => {
                 sendDirectMessage({
                     receiverUserId: chosenChatDetails.id,
                     content: message,
+                    contentType:'text',
+                    filename:'',
                 });
             }else if(chatType=='GROUP'){
                 sendGroupMessage({
                     groupId: chosenChatDetails.id,
                     content: message,
+                    contentType:'text',
+                    filename:'',
                 });
             }else if(chatType=='SUBGROUP'){
                 sendSubgroupMessage({
                     subgroupId: chosenChatDetails.id,
                     content: message,
+                    contentType:'text',
+                    filename:'',
                 });
             }
             
             setMessage("");
+        }
+    };
+
+    const validateFile= async(file)=>{
+        if(file){
+            console.log(file.type);
+            try{
+                const result= await uploadFile(file);
+
+                if(chatType=='DIRECT'){
+                    sendDirectMessage({
+                        receiverUserId: chosenChatDetails.id,
+                        content: result,
+                        contentType:file.type,
+                        filename:file.name,
+                    });
+                }else if(chatType=='GROUP'){
+                    sendGroupMessage({
+                        groupId: chosenChatDetails.id,
+                        content: result,
+                        contentType:file.type,
+                        filename:file.name,
+                    });
+                }else if(chatType=='SUBGROUP'){
+                    sendSubgroupMessage({
+                        subgroupId: chosenChatDetails.id,
+                        content: result,
+                        contentType:file.type,
+                        filename:file.name,
+                    });
+                }
+                console.log(result);
+            }catch(error){
+                console.log(error);
+            }
+           
         }
     };
 
@@ -68,6 +113,8 @@ const NewMessageInput = ({ chosenChatDetails, chatType }) => {
                 onChange={handleMessageValueChange}
                 onKeyDown={handleKeyPressed}
             />
+            <IconButton onClick={()=>document.querySelector(".attachFile").click()}><AttachFileIcon/></IconButton>
+            <input className='attachFile' hidden type={"file"} accept=".pdf, image/*" onChange={e=>validateFile(e.target.files[0])}></input>
         </MainContainer>
     );
 };

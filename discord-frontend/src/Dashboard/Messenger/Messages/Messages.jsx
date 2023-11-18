@@ -26,6 +26,12 @@ const convertDateToHumanReadable = (date, format) => {
 };
 
 const Messages = ({ chosenChatDetails, messages }) => {
+
+  const isLink = (message) => {
+      const urlPattern = /(http:\/\/|https:\/\/)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\S*)*/g;
+      return urlPattern.test(message);
+  };
+
   return (
     <MainContainer>
       <MessagesHeader name={chosenChatDetails?.name} />
@@ -61,6 +67,9 @@ const Messages = ({ chosenChatDetails, messages }) => {
                 "dd/mm/yy"
               )}
               sameDay={sameDay}
+              isLink={isLink(message.content)}
+              fileName={message.filename}
+              contentType={message.contentType}
             />
           </div>
         );

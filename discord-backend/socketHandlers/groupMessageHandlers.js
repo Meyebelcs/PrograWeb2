@@ -9,7 +9,7 @@ const groupMessageHandler = async (socket, data) => {
    
 
     const { userId } = socket.user;
-    const { groupId, content } = data;
+    const { groupId, content, contentType, filename } = data;
  
     console.log(groupId);
 
@@ -19,6 +19,8 @@ const groupMessageHandler = async (socket, data) => {
       author: userId,
       date: new Date(),
       type: "GROUP",
+      contentType:contentType,
+      filename:filename
     });
 
     // find if conversation exist with this two users - if not create new
