@@ -32,7 +32,6 @@ const login =(userDetails,navigate)=>{
             localStorage.setItem('user',JSON.stringify(userDetails));
 
             dispatch(setUserDetails(userDetails));
-            dispatch(openAlertMessage("Se inició sesión correctamente"));
             navigate("/dashboard");
         }
     }
@@ -49,7 +48,6 @@ const register =(userDetails,navigate)=>{
             localStorage.setItem('user',JSON.stringify(userDetails)); 
 
             dispatch(setUserDetails(userDetails));*/
-            dispatch(openAlertMessage("Se registró correctamente"));
             navigate("/login");
         }
     }

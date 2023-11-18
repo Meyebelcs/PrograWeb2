@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { styled } from '@mui/system';
 import { connect } from 'react-redux';
 import {FormControlLabel, Icon, IconButton } from '@mui/material';
 import { sendDirectMessage, sendGroupMessage, sendSubgroupMessage } from '../../realtimeCommunication/socketConnection';
 import { uploadFile } from '../../Firebase/config';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import {openAlertMessage} from "../../store/actions/alertActions"
+import { useDispatch } from 'react-redux';
 
 const MainContainer = styled("div")({
     height: "60px",
@@ -28,6 +30,8 @@ const Input = styled('input')({
 
 const NewMessageInput = ({ chosenChatDetails, chatType }) => {
     const [message, setMessage] = useState("");
+    const dispatch = useDispatch();
+    const fileInputRef = useRef(null);
 
     const handleMessageValueChange = (event) => {
         setMessage(event.target.value);
@@ -71,33 +75,38 @@ const NewMessageInput = ({ chosenChatDetails, chatType }) => {
 
     const validateFile= async(file)=>{
         if(file){
-            console.log(file.type);
+            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+            
             try{
-                const result= await uploadFile(file);
-
-                if(chatType=='DIRECT'){
-                    sendDirectMessage({
-                        receiverUserId: chosenChatDetails.id,
-                        content: result,
-                        contentType:file.type,
-                        filename:file.name,
-                    });
-                }else if(chatType=='GROUP'){
-                    sendGroupMessage({
-                        groupId: chosenChatDetails.id,
-                        content: result,
-                        contentType:file.type,
-                        filename:file.name,
-                    });
-                }else if(chatType=='SUBGROUP'){
-                    sendSubgroupMessage({
-                        subgroupId: chosenChatDetails.id,
-                        content: result,
-                        contentType:file.type,
-                        filename:file.name,
-                    });
+                if (allowedTypes.includes(file.type)) {
+                    const result= await uploadFile(file);
+                    if(chatType=='DIRECT'){
+                        sendDirectMessage({
+                            receiverUserId: chosenChatDetails.id,
+                            content: result,
+                            contentType:file.type,
+                            filename:file.name,
+                        });
+                    }else if(chatType=='GROUP'){
+                        sendGroupMessage({
+                            groupId: chosenChatDetails.id,
+                            content: result,
+                            contentType:file.type,
+                            filename:file.name,
+                        });
+                    }else if(chatType=='SUBGROUP'){
+                        sendSubgroupMessage({
+                            subgroupId: chosenChatDetails.id,
+                            content: result,
+                            contentType:file.type,
+                            filename:file.name,
+                        });
+                    }
+                    fileInputRef.current.value = '';
+                }else{
+                    dispatch(openAlertMessage('Lo siento, solo se permiten archivos PDF e imágenes (JPEG, PNG). Por favor, seleccione un archivo válido.'));
+                    fileInputRef.current.value = '';
                 }
-                console.log(result);
             }catch(error){
                 console.log(error);
             }
@@ -108,13 +117,13 @@ const NewMessageInput = ({ chosenChatDetails, chatType }) => {
     return (
         <MainContainer>
             <Input
-                placeholder={`Write message to ${chosenChatDetails.name}`}
+                placeholder={`Escrir mensaje a ${chosenChatDetails.name}`}
                 value={message}
                 onChange={handleMessageValueChange}
                 onKeyDown={handleKeyPressed}
             />
             <IconButton onClick={()=>document.querySelector(".attachFile").click()}><AttachFileIcon/></IconButton>
-            <input className='attachFile' hidden type={"file"} accept=".pdf, image/*" onChange={e=>validateFile(e.target.files[0])}></input>
+            <input className='attachFile' hidden type={"file"} accept=".pdf, image/*" ref={fileInputRef} onChange={e=>validateFile(e.target.files[0])}></input>
         </MainContainer>
     );
 };
