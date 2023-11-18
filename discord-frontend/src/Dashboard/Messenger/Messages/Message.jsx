@@ -38,6 +38,13 @@ const Message = ({ content, sameAuthor, username, date, sameDay, isLink, fileNam
     var parts;
     var lastPart;
     var url;
+
+    if(contentType=='location'){
+        parts = content.split("=");
+        lastPart = parts[parts.length - 1];
+        url=`https://maps.googleapis.com/maps/api/staticmap?center=${lastPart}&zoom=14&size=400x400&markers=size:mid%7C=color:red%7C${lastPart}&key=AIzaSyA4tR4smZ_xoVoaaAGPSKefX9K0XfdYOKU`
+        //url=`https://maps.googleapis.com/maps/api/staticmap?center=${lastPart}&zoom=14&size=400x300&sensor=flase&markers=size:mid%7C=color:red%7C${lastPart}&key=AIzaSyA4tR4smZ_xoVoaaAGPSKefX9K0XfdYOKU`;
+    }
     
     if (sameAuthor && sameDay) {
         if(isLink && contentType =='text'){
@@ -45,6 +52,14 @@ const Message = ({ content, sameAuthor, username, date, sameDay, isLink, fileNam
                 <SameAuthorMessageContent>
                     <SameAuthorMessageText>
                         <a href={content}>{content}</a>
+                    </SameAuthorMessageText>
+                </SameAuthorMessageContent>
+            );
+        }else if(contentType=='location'){
+            return (
+                <SameAuthorMessageContent>
+                    <SameAuthorMessageText>
+                        <a href={content}><img style={{width:'500px', marginTop:'10px'}} src={url}/></a>
                     </SameAuthorMessageText>
                 </SameAuthorMessageContent>
             );
