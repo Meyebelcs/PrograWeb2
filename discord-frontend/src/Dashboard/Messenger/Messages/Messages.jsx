@@ -1,4 +1,4 @@
-import React, { userRef, useEffect } from "react";
+import React, {useRef, useEffect } from "react";
 import { styled } from "@mui/system";
 import MessagesHeader from "./MessagesHeader";
 import { connect } from "react-redux";
@@ -27,13 +27,29 @@ const convertDateToHumanReadable = (date, format) => {
 
 const Messages = ({ chosenChatDetails, messages }) => {
 
+  const messagesContainerRef = useRef(null);
+
+  useEffect(() => {
+    // Scrollear hasta el final cuando llega un nuevo mensaje
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    // Scrollear hasta el final cuando carga la conversación
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, []); // Solo s emanda a llamar una vez después de que el componente carga
+
   const isLink = (message) => {
       const urlPattern = /(http:\/\/|https:\/\/)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\S*)*/g;
       return urlPattern.test(message);
   };
 
   return (
-    <MainContainer>
+    <MainContainer ref={messagesContainerRef}>
       <MessagesHeader name={chosenChatDetails?.name} />
       {messages.map((message, index) => {
         const sameAuthor =
