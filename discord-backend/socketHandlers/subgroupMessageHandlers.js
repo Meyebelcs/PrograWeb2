@@ -1,5 +1,6 @@
 const Message = require("../models/message");
 const Subgroup = require("../models/subgroup");
+const History= require("../models/history");
 const chatUpdates = require("./updates/chat");
 const serverStore = require("../serverStore");
 
@@ -14,7 +15,7 @@ const groupMessageHandler = async (socket, data) => {
     const { userId } = socket.user;
     const { subgroupId, content, contentType, filename } = data;
 
-    if(receiverUserId.length<1){
+    if(subgroupId.length<1){
       return io.emit("error-message", "Lo sentimos, ha ocurrido un error interno. Por favor, inténtalo de nuevo más tarde.");
     }
 
@@ -42,6 +43,11 @@ const groupMessageHandler = async (socket, data) => {
       type: "SUBGROUP",
       contentType:contentType,
       filename:filename
+    });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Send message',
     });
 
     // find if conversation exist with this two users - if not create new

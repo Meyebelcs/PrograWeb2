@@ -1,7 +1,8 @@
 const serverStore = require('../serverStore');
 const roomsUpdates = require('./updates/rooms');
+const History= require("../models/history");
 
-const roomJoinHandler = (socket, data) => {
+const roomJoinHandler = async (socket, data) => {
     const { roomId } = data;
 
     const participantDetails = {
@@ -11,6 +12,11 @@ const roomJoinHandler = (socket, data) => {
 
     const roomDetails = serverStore.getActiveRoom(roomId);
     serverStore.joinActiveRoom(roomId, participantDetails);
+
+    const history = await History.create({
+        userId:socket.user.userId,
+        action:'Join room',
+    });
 
     //Send information to users in room that they should prepare for incoming connection
     roomDetails.participants.forEach((participant) => {

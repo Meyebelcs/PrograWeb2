@@ -63,8 +63,6 @@ const ActiveRoomButton = ({
 const SideBar = ({ activeRooms, isUserInRoom, onPrivateChatsClick, onGroupChatsClick, chosenChatDetails }) => {
    
     const filteredActiveRooms = activeRooms.filter(room => room.chatId === chosenChatDetails?.id || (room.roomCreator.userId===chosenChatDetails?.id && room.chatType==='DIRECT'));
-    console.log(activeRooms);
-    console.log(chosenChatDetails?.id);
 
     return (
         <MainContainer>

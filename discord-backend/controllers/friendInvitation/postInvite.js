@@ -1,6 +1,7 @@
 const friendInvitation = require('../../models/friendInvitation');
 const friendsUpdates=require('../../socketHandlers/updates/friends');
 const User=require('../../models/user');
+const History= require("../../models/history");
 
 const postInvite=async(req,res)=>{
     const {targetMailAddress}=req.body;
@@ -48,6 +49,11 @@ const postInvite=async(req,res)=>{
     const newInvitation=await friendInvitation.create({
         senderId:userId,
         receiverId:targetUser._id,
+    });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Send friend invitation',
     });
 
     //update friendInvitations

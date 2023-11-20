@@ -44,7 +44,6 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('groups-list', (data) => {
-        console.log(data);
         const { groups } = data;
         store.dispatch(setGroups(groups));
     });
@@ -58,7 +57,6 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('active-rooms', (data) => {
-        console.log(data);
         roomHandler.updateActiveRooms(data);
     });
 

@@ -1,5 +1,6 @@
 const Message = require("../models/message");
 const Group=require("../models/group");
+const History= require("../models/history");
 const chatUpdates = require("./updates/chat");
 const serverStore = require("../serverStore");
 
@@ -43,6 +44,11 @@ const groupMessageHandler = async (socket, data) => {
       type: "GROUP",
       contentType:contentType,
       filename:filename
+    });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Send message',
     });
 
     // find if conversation exist with this two users - if not create new

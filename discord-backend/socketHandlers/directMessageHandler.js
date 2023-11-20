@@ -1,5 +1,6 @@
 const Message = require("../models/message");
 const Conversation = require("../models/conversation");
+const History= require("../models/history");
 const chatUpdates = require("./updates/chat");
 const serverStore = require("../serverStore");
 
@@ -45,6 +46,12 @@ const directMessageHandler = async (socket, data) => {
       filename:filename
 
     });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Send message',
+    });
+
 
     // find if conversation exist with this two users - if not create new
     const conversation = await Conversation.findOne({

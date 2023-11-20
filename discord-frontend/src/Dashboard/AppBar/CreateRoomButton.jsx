@@ -8,7 +8,7 @@ const CreateRoomButton = ({ isUserInRoom }) => {
     const createNewRoomHandler = () =>{
         roomHandler.createNewRoom();
     };
-    console.log(isUserInRoom);
+    
     return (
         <Button
             disabled={isUserInRoom}

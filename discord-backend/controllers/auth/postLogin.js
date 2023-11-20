@@ -1,4 +1,5 @@
 const User= require("../../models/user");
+const History= require("../../models/history");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 
@@ -24,6 +25,11 @@ const postLogin=async (req,res)=>{
                 expiresIn: "24h",
                 }
             );
+
+            const history = await History.create({
+                userId:user._id,
+                action:'Login',
+            });
 
             return res.status(200).json({
                 userDetails:{

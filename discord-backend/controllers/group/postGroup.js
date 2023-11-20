@@ -1,4 +1,5 @@
 const Group = require('../../models/group');
+const History= require("../../models/history");
 const groupsUpdate = require('../../socketHandlers/updates/groups');
 const mongoose = require('mongoose');
 
@@ -16,8 +17,6 @@ const postGroup  =async (req, res)=> {
 
     const {userId}=req.user;
 
-    console.log(userId);
-
     const participantIds = participants.map((participantId) => new mongoose.Types.ObjectId(participantId));
     participantIds.push(new mongoose.Types.ObjectId(userId));
 
@@ -25,6 +24,11 @@ const postGroup  =async (req, res)=> {
         name: name,
         participants: participantIds,
         messages:[],
+    });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Create group',
     });
 
     for (const participantId of participantIds) {

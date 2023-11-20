@@ -75,13 +75,7 @@ const Message = ({ content, sameAuthor, username, date, sameDay, isLink, fileNam
                 </SameAuthorMessageContent>
             );
         }
-        /* return (
-            <SameAuthorMessageContent>
-                <SameAuthorMessageText>{content}</SameAuthorMessageText>
-            </SameAuthorMessageContent>
-        ); */
     }
-    console.log(contentType);
     return <MainContainer>
         <AvatarContainer>
             <Avatar username={username}/>

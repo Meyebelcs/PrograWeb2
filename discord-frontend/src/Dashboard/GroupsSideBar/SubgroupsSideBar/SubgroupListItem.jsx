@@ -11,9 +11,6 @@ const SubgroupListItem = ({ id, name, setChosenChatDetails, isInCall }) => {
     const handleChoosenActiveConversation = () => {//Mandamos a guardar los datos de la conversación seleccionada
         setChosenChatDetails({ id: id, name: name }, chatTypes.SUBGROUP);
     };
-
-    console.log(name);
-    console.log(isInCall);
     
     return (
         <Button
