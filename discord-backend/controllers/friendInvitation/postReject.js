@@ -1,5 +1,6 @@
 const friendInvitation = require("../../models/friendInvitation");
 const friendsUpdates=require('../../socketHandlers/updates/friends');
+const History= require("../../models/history");
 
 const postReject=async(req,res)=>{
     try{
@@ -12,6 +13,11 @@ const postReject=async(req,res)=>{
         if(invitationExists){
             await friendInvitation.findByIdAndDelete(id);
         }
+
+        const history = await History.create({
+            userId:userId,
+            action:'reject friend invitation',
+        });
 
         //update pending invitations
         friendsUpdates.updateFriendsPendingInvitations(userId);

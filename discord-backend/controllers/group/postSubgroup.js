@@ -1,5 +1,6 @@
 const Subgroup = require('../../models/subgroup');
 const Group = require('../../models/group');
+const History= require("../../models/history");
 const groupsUpdate = require('../../socketHandlers/updates/groups');
 const mongoose = require('mongoose');
 
@@ -24,6 +25,11 @@ const postGroup  =async (req, res)=> {
         name: name,
         participants: participantIds,
         messages:[],
+    });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Create subgroup',
     });
 
     const targetGroup = await Group.findById(groupId);

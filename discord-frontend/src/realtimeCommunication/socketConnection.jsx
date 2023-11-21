@@ -5,6 +5,7 @@ import store from '../store/store';
 import { updateDirectChatHistoryIfActive, updateGroupChatHistoryIfActive } from '../shared/utils/chat';
 import * as roomHandler from './roomHandler';
 import * as webRTCHandler from './webRTCHandler';
+import Swal from 'sweetalert2';
 
 let socket = null;
 
@@ -43,7 +44,6 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('groups-list', (data) => {
-        console.log(data);
         const { groups } = data;
         store.dispatch(setGroups(groups));
     });
@@ -57,7 +57,6 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on('active-rooms', (data) => {
-        console.log(data);
         roomHandler.updateActiveRooms(data);
     });
 
@@ -79,6 +78,24 @@ export const connectWithSocketServer = (userDetails) => {
     socket.on("room-participant-left", (data) => {
         console.log("user left room");
         webRTCHandler.handleParticipantLeftRoom(data);
+    });
+
+    socket.on("error-message", (data) => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "bottom",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: false,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "error",
+            title: data
+          });
     });
 };
 

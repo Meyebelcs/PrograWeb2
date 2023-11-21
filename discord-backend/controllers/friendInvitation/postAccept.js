@@ -1,5 +1,6 @@
 const friendInvitation=require('../../models/friendInvitation');
 const User = require('../../models/user');
+const History= require("../../models/history");
 const friendsUpdates=require('../../socketHandlers/updates/friends');
 
 const postAccept=async(req,res)=>{
@@ -23,6 +24,11 @@ const postAccept=async(req,res)=>{
 
         await senderUser.save();
         await receiverUser.save();
+
+        const history = await History.create({
+            userId:receiverUser,
+            action:'accept friend invitation',
+        });
 
         //delete invitation
         await friendInvitation.findByIdAndDelete(id);

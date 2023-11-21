@@ -17,7 +17,7 @@ const MainContainer=styled('div')({
 });
 
 const ChosenOptionLabel = ({ name, isUserInRoom}) => {
-    console.log(isUserInRoom);
+    
     return (
         <MainContainer>
             <Typography

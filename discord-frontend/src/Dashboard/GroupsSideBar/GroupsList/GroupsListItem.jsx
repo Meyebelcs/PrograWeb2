@@ -18,8 +18,7 @@ const GroupsListItem = ({ id, groupName, isInCall, participants, subgroups, expa
   };
 
   const userSubgroups = subgroups.filter((g) => g.participants.includes(currentUser._id));
-  console.log(userSubgroups);
-
+  
   return (
     <Accordion expanded={expanded} onChange={onAccordionChange}
       sx={{

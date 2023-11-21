@@ -1,17 +1,40 @@
 const Message = require("../models/message");
 const Group=require("../models/group");
+const History= require("../models/history");
 const chatUpdates = require("./updates/chat");
+const serverStore = require("../serverStore");
 
 const groupMessageHandler = async (socket, data) => {
   try {
     console.log("group message event is being handled");
 
-   
+    const allowedContentTypes = ['application/pdf', 'image/jpeg', 'image/png', 'text', 'location'];
+    const fileContentTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+
+    const io = serverStore.getSocketServerInstance();
 
     const { userId } = socket.user;
-    const { groupId, content } = data;
- 
-    console.log(groupId);
+    const { groupId, content, contentType, filename } = data;
+
+    if(groupId.length<1){
+      return io.to(socket.id).emit("error-message", "Lo sentimos, ha ocurrido un error interno. Por favor, inténtalo de nuevo más tarde.");
+    }
+
+    if(content.length<1){
+      return io.to(socket.id).emit("error-message", "Por favor, asegúrate de ingresar un mensaje antes de enviar.");
+    }
+
+    if(contentType.length<1){
+      return io.to(socket.id).emit("error-message", 'El mensaje no tiene un tipo de contenido válido.');
+    }
+
+    if(!allowedContentTypes.includes(contentType)){
+      return io.to(socket.id).emit("error-message", 'El mensaje no tiene un tipo de contenido válido.');
+    }
+
+    if(fileContentTypes.includes(contentType) && filename.length<1){
+      return io.to(socket.id).emit("error-message", 'El archivo adjunto no tiene un nombre válido.');
+    }
 
     // create new message
     const message = await Message.create({
@@ -19,6 +42,13 @@ const groupMessageHandler = async (socket, data) => {
       author: userId,
       date: new Date(),
       type: "GROUP",
+      contentType:contentType,
+      filename:filename
+    });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Send message',
     });
 
     // find if conversation exist with this two users - if not create new

@@ -1,13 +1,40 @@
 const Message = require("../models/message");
 const Conversation = require("../models/conversation");
+const History= require("../models/history");
 const chatUpdates = require("./updates/chat");
+const serverStore = require("../serverStore");
 
 const directMessageHandler = async (socket, data) => {
   try {
-    console.log("direct message event is being handled");
+
+    const allowedContentTypes = ['application/pdf', 'image/jpeg', 'image/png', 'text', 'location'];
+    const fileContentTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+
+    const io = serverStore.getSocketServerInstance();
 
     const { userId } = socket.user;
-    const { receiverUserId, content } = data;
+    const { receiverUserId, content, contentType, filename } = data;
+
+    if(receiverUserId.length<1){
+      return io.to(socket.id).emit("error-message", "Lo sentimos, ha ocurrido un error interno. Por favor, inténtalo de nuevo más tarde.");
+    }
+
+    if(content.length<1){
+      return io.to(socket.id).emit("error-message", "Por favor, asegúrate de ingresar un mensaje antes de enviar.");
+    }
+
+    if(contentType.length<1){
+      return io.to(socket.id).emit("error-message", 'El mensaje no tiene un tipo de contenido válido.');
+    }
+
+    if(!allowedContentTypes.includes(contentType)){
+      return io.to(socket.id).emit("error-message", 'El mensaje no tiene un tipo de contenido válido.');
+    }
+
+    if(fileContentTypes.includes(contentType) && filename.length<1){
+      return io.to(socket.id).emit("error-message", 'El archivo adjunto no tiene un nombre válido.');
+    }
+
 
     // create new message
     const message = await Message.create({
@@ -15,7 +42,16 @@ const directMessageHandler = async (socket, data) => {
       author: userId,
       date: new Date(),
       type: "DIRECT",
+      contentType:contentType,
+      filename:filename
+
     });
+
+    const history = await History.create({
+        userId:userId,
+        action:'Send message',
+    });
+
 
     // find if conversation exist with this two users - if not create new
     const conversation = await Conversation.findOne({
