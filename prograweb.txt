@@ -1,0 +1,10 @@
+Denisse Alejandra Cardoza Pezina 1896868
+Melany Arleth Jiménez Gómez 1904119
+Mario Asael Martinez Bocanegra 2031920
+
+Como ejecutar el proyecto:
+1. si está recien instalado ejecutar npm install en el frontend y en el backend.
+2. Para ejecutar el frontend se usa el comando npm run dev.
+3. Para ejecutar el backend se usa el comando npm start.
+
+Repositorio: https://github.com/Meyebelcs/PrograWeb2
